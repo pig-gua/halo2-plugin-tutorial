@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "halo-plugin-dev": {
+      "source": "halo-dev/dev-skills",
+      "sourceType": "github",
+      "skillPath": "skills/halo-plugin-dev/SKILL.md",
+      "computedHash": "1cbb809519e04d12d8180fa0c0cf9fcd9e6a90495d6e82e576b6efc052d790dc"
+    }
+  }
+}
