@@ -8,15 +8,15 @@ export default definePlugin({
     {
       parentName: 'Root',
       route: {
-        path: '/example',
-        name: 'Example',
+        path: "/todos", // 前端路由 path
+        name: 'TodoList', // 菜单标识名
         component: () => import(/* webpackChunkName: "HomeView" */ './views/HomeView.vue'),
         meta: {
-          title: '示例页面',
+          title: "Todo List", // 菜单页的浏览器 tab 标题
           searchable: true,
           menu: {
-            name: '示例页面',
-            group: '示例分组',
+            name: "Todo List", // 菜单显示名称
+            group: "工具", // 菜单所在组名
             icon: markRaw(IconPlug),
             priority: 0,
           },
