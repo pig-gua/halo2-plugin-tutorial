@@ -22,6 +22,11 @@ spec:
               label: 设备 Key
               validation: required
               help: 请填写 Bark 设备的 Key ( 手机端 -> 服务器 -> 示例 )
+#            - $formkit: url
+#              name: baseUrl
+#              label: 访问地址
+#              value: http://localhost:8090
+#              help: 请填写Halo访问地址，用于Bark消息点击跳转 ( 测试阶段 )
         - $formkit: checkbox
           name: notifyEvents
           label: 通知事件

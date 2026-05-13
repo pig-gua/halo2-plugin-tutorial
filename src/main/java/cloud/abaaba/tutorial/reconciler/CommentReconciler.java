@@ -52,7 +52,7 @@ public class CommentReconciler implements Reconciler<Reconciler.Request> {
         client.update(comment);
 
         // 4、Bark 异步推送
-        barkService.sendBarkNotification("新评论：" + comment.getSpec().getContent());
+        barkService.sendNewCommentNotification(comment);
         return Result.doNotRetry();
     }
 
