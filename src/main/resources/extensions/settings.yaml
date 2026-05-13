@@ -1,0 +1,32 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: tutorial-settings   # 必须与 plugin.yaml 的 settingName 一致
+spec:
+  forms:
+    - group: bark
+      label: Bark 设置
+      formSchema:
+        - $formkit: verificationForm
+          action: /apis/console.api.tutorial.halo.run/v1alpha1/bark/test
+          label: 测试推送
+          children:
+            - $formkit: url
+              name: serverUrl
+              label: Bark 服务器地址
+              value: https://api.day.app
+              validation: required
+              help: 请填写 Bark 服务器的地址 ( 官方服务器地址 https://api.day.app )
+            - $formkit: password
+              name: deviceKey
+              label: 设备 Key
+              validation: required
+              help: 请填写 Bark 设备的 Key ( 手机端 -> 服务器 -> 示例 )
+        - $formkit: checkbox
+          name: notifyEvents
+          label: 通知事件
+          options:
+            - label: 新注册
+              value: newRegister
+            - label: 新评论
+              value: newComment

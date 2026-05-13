@@ -20,3 +20,5 @@ spec:
   license:
     - name: "GPL-3.0"
       url: "https://github.com/Pig-Gua/tutorial/blob/main/LICENSE"
+  settingName: tutorial-settings    # 命名规范：插件名-settings
+  configMapName: tutorial-configmap  # 命名规范：插件名-configmap
