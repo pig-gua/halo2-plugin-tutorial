@@ -44,6 +44,7 @@ public class BarkService {
             .filter(setting -> setting.getNotifyEvents().contains("newComment"))
             .subscribe(setting -> {
                 BarkOptions options = new BarkOptions();
+                options.setIcon("https://www.halo.run/upload/2021/03/Adaptive256-463ca9b92e2d40268431018c07735842.png");
                 options.setTitle("新评论");
                 options.setMessage(stripHtmlTags(comment.getSpec().getContent()));
                 if (StringUtils.isBlank(setting.getBaseUrl())) {
@@ -111,6 +112,7 @@ public class BarkService {
             .filter(setting -> setting.getNotifyEvents().contains("newRegister"))
             .subscribe(setting -> {
                 BarkOptions options = new BarkOptions();
+                options.setIcon("https://www.halo.run/upload/2021/03/Adaptive256-463ca9b92e2d40268431018c07735842.png");
                 options.setTitle("新用户注册");
                 options.setMessage(user.getSpec().getDisplayName());
                 sendBarkNotification(setting, options);
