@@ -1,6 +1,5 @@
 package cloud.abaaba.bark;
 
-import cloud.abaaba.bark.BarkPlugin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,7 +18,7 @@ class BarkPluginTest {
 
     @Test
     void contextLoads() {
-        // plugin.start();
-        // plugin.stop();
+        plugin.start();
+        plugin.stop();
     }
 }
