@@ -1,15 +1,15 @@
 apiVersion: v1alpha1
 kind: Role
 metadata:
-  name: tutorial-role-manage-bark
+  name: bark-role-manage-bark
   labels:
     halo.run/role-template: "true"
   annotations:
     rbac.authorization.halo.run/module: "Bark Management"
     rbac.authorization.halo.run/display-name: "Manage Bark"
     rbac.authorization.halo.run/ui-permissions: |
-      ["plugin:tutorial:bark:manage"]
+      ["plugin:bark:bark:manage"]
 rules:
-  - apiGroups: ["console.api.tutorial.halo.run"]
+  - apiGroups: ["console.api.bark.halo.run"]
     resources: ["bark/test"]
     verbs: ["create"]

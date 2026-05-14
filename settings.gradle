@@ -3,5 +3,5 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'plugin-tutorial'
+rootProject.name = 'plugin-bark'
 include 'ui'

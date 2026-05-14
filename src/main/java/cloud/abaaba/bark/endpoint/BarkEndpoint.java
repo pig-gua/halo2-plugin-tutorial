@@ -1,4 +1,4 @@
-package cloud.abaaba.tutorial.endpoint;
+package cloud.abaaba.bark.endpoint;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 import org.springdoc.webflux.core.fn.SpringdocRouteBuilder;
@@ -30,8 +30,8 @@ public class BarkEndpoint implements CustomEndpoint {
 
     @Override
     public GroupVersion groupVersion() {
-        // 自动拼接为 /apis/console.api.tutorial.halo.run/v1alpha1/bark/test
-        return new GroupVersion("console.api.tutorial.halo.run", "v1alpha1");
+        // 自动拼接为 /apis/console.api.bark.halo.run/v1alpha1/bark/test
+        return new GroupVersion("console.api.bark.halo.run", "v1alpha1");
     }
 
     private Mono<ServerResponse> testBark(ServerRequest request) {

@@ -1,5 +1,6 @@
-package cloud.abaaba.tutorial;
+package cloud.abaaba.bark;
 
+import cloud.abaaba.bark.BarkPlugin;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,13 +9,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import run.halo.app.plugin.PluginContext;
 
 @ExtendWith(MockitoExtension.class)
-class TutorialPluginTest {
+class BarkPluginTest {
 
     @Mock
     PluginContext context;
 
     @InjectMocks
-    TutorialPlugin plugin;
+    BarkPlugin plugin;
 
     @Test
     void contextLoads() {

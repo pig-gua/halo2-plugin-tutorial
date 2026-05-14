@@ -1,4 +1,4 @@
-package cloud.abaaba.tutorial.service;
+package cloud.abaaba.bark.service;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;

@@ -3,7 +3,7 @@ plugins {
     id "com.github.node-gradle.node" version "7.1.0"
 }
 
-group 'cloud.abaaba.tutorial.ui'
+group 'cloud.abaaba.bark.ui'
 
 tasks.register('pnpmBuild', PnpmTask) {
     group = 'build'

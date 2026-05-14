@@ -1,14 +1,14 @@
 apiVersion: v1alpha1
 kind: Setting
 metadata:
-  name: tutorial-settings   # 必须与 plugin.yaml 的 settingName 一致
+  name: bark-settings   # 必须与 plugin.yaml 的 settingName 一致
 spec:
   forms:
     - group: bark
       label: Bark 设置
       formSchema:
         - $formkit: verificationForm
-          action: /apis/console.api.tutorial.halo.run/v1alpha1/bark/test
+          action: /apis/console.api.bark.halo.run/v1alpha1/bark/test
           label: 测试推送
           children:
             - $formkit: url

@@ -1,6 +1,6 @@
-# tutorial
+# bark
 
-tutorial - Halo 插件
+bark - Halo 插件
 
 ## 简介
 

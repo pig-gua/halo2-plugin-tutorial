@@ -4,21 +4,21 @@ apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
   # The name defines how the plugin is invoked, A unique name
-  name: tutorial
+  name: plugin-bark
 spec:
   enabled: true
   requires: ">=2.23.0"
   author:
-    name: Pig-Gua
+    name: 呱仔
     website: https://github.com/Pig-Gua
   logo: logo.png
-  homepage: https://github.com/Pig-Gua/tutorial#readme
-  repo: https://github.com/Pig-Gua/tutorial
-  issues: https://github.com/Pig-Gua/tutorial/issues
-  displayName: "tutorial"
-  description: "tutorial - Halo 插件"
+  homepage: https://github.com/Pig-Gua/plugin-bark#readme
+  repo: https://github.com/Pig-Gua/plugin-bark
+  issues: https://github.com/Pig-Gua/plugin-bark/issues
+  displayName: "plugin-bark"
+  description: "通过 Bark 应用实时推送 Halo 博客的新评论和注册用户通知。"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/Pig-Gua/tutorial/blob/main/LICENSE"
-  settingName: tutorial-settings    # 命名规范：插件名-settings
-  configMapName: tutorial-configmap  # 命名规范：插件名-configmap
+      url: "https://github.com/Pig-Gua/plugin-bark/blob/main/LICENSE"
+  settingName: bark-settings    # 命名规范：插件名-settings
+  configMapName: bark-configmap  # 命名规范：插件名-configmap
