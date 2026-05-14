@@ -6,8 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import run.halo.app.core.extension.User;
 import run.halo.app.core.extension.content.Comment;
+import run.halo.app.core.extension.content.Post;
+import run.halo.app.core.extension.content.SinglePage;
+import run.halo.app.extension.ReactiveExtensionClient;
+import run.halo.app.extension.Ref;
 import run.halo.app.plugin.ReactiveSettingFetcher;
 import java.util.List;
 
@@ -21,9 +26,11 @@ import java.util.List;
 public class BarkService {
 
     private static final Logger log = LoggerFactory.getLogger(BarkService.class);
+    private final ReactiveExtensionClient client;
     private final ReactiveSettingFetcher settingFetcher;
 
-    public BarkService(ReactiveSettingFetcher settingFetcher) {
+    public BarkService(ReactiveExtensionClient client, ReactiveSettingFetcher settingFetcher) {
+        this.client = client;
         this.settingFetcher = settingFetcher;
     }
 
@@ -33,16 +40,64 @@ public class BarkService {
      * @param comment 新评论
      */
     public void sendNewCommentNotification(Comment comment) {
-        // 获取设置项
         settingFetcher.fetch("bark", BarkSetting.class)
+            .filter(setting -> setting.getNotifyEvents().contains("newComment"))
             .subscribe(setting -> {
-                if (setting.getNotifyEvents().contains("newComment")) {
-                    BarkOptions options = new BarkOptions();
-                    options.setTitle("新评论");
-                    options.setMessage(comment.getSpec().getContent());
+                BarkOptions options = new BarkOptions();
+                options.setTitle("新评论");
+                options.setMessage(stripHtmlTags(comment.getSpec().getContent()));
+                if (StringUtils.isBlank(setting.getBaseUrl())) {
                     sendBarkNotification(setting, options);
+                } else {
+                    getSubjectPermalink(comment, setting.getBaseUrl())
+                        .subscribe(permalink -> {
+                            options.setUrl(permalink);
+                            sendBarkNotification(setting, options);
+                        });
                 }
             });
+    }
+
+    /**
+     * 获取评论对象的地址
+     *
+     * @param comment 评论
+     * @return 地址
+     */
+    private Mono<String> getSubjectPermalink(Comment comment, String baseUrl) {
+        Ref subjectRef = comment.getSpec().getSubjectRef();
+        String kind = subjectRef.getKind();
+        String name = subjectRef.getName();
+        if ("Post".equals(kind)) {
+            return client.fetch(Post.class, name).map(p -> baseUrl + p.getStatus().getPermalink());
+        } else if ("SinglePage".equals(kind)) {
+            return client.fetch(SinglePage.class, name)
+                .map(p -> baseUrl + p.getStatus().getPermalink());
+        } else if ("Moment".equals(kind)) {
+            return Mono.just(baseUrl + "/moments");
+        }
+        return Mono.empty();
+    }
+
+    /**
+     * 去除HTML标签，替换为空格
+     *
+     * @param html 包含HTML标签的文本
+     * @return 纯文本
+     */
+    private String stripHtmlTags(String html) {
+        if (StringUtils.isBlank(html)) {
+            return html;
+        }
+
+        // 去除HTML标签
+        String text = html.replaceAll("<[^>]+>", " ");
+
+        // 将多个连续空格合并为一个
+        text = text.replaceAll("\\s+", " ");
+
+        // 去除首尾空格
+        return text.trim();
     }
 
     /**
@@ -53,13 +108,12 @@ public class BarkService {
     public void sendNewRegisterNotification(User user) {
         // 获取设置项
         settingFetcher.fetch("bark", BarkSetting.class)
+            .filter(setting -> setting.getNotifyEvents().contains("newRegister"))
             .subscribe(setting -> {
-                if (setting.getNotifyEvents().contains("newRegister")) {
-                    BarkOptions options = new BarkOptions();
-                    options.setTitle("新用户注册");
-                    options.setMessage(user.getSpec().getDisplayName());
-                    sendBarkNotification(setting, options);
-                }
+                BarkOptions options = new BarkOptions();
+                options.setTitle("新用户注册");
+                options.setMessage(user.getSpec().getDisplayName());
+                sendBarkNotification(setting, options);
             });
     }
 
@@ -71,22 +125,29 @@ public class BarkService {
      */
     private void sendBarkNotification(BarkSetting setting, BarkOptions options) {
         log.info("Sending Bark notification: " + options.build());
-        WebClient.create()
-            .get()
+        WebClient.create().get()
             .uri(setting.getServerUrl() + "/" + setting.getDeviceKey() + "/" + options.build())
-            .retrieve()
-            .bodyToMono(Void.class)
-            .subscribe(
-                result -> log.info("Bark notification sent successfully."),
-                error -> log.error("Failed to send Bark notification: " + error.getMessage(), error)
-            );
+            .retrieve().bodyToMono(Void.class)
+            .subscribe(result -> log.info("Bark notification sent successfully."),
+                error -> log.error("Failed to send Bark notification: " + error.getMessage(),
+                    error));
     }
 
     @Data
     public static class BarkSetting {
         private String serverUrl;
         private String deviceKey;
+        private String baseUrl;
         private List<String> notifyEvents;
+
+        public String getBaseUrl() {
+            // 移除末尾的斜杠
+            if (baseUrl != null && baseUrl.endsWith("/")) {
+                return baseUrl.substring(0, baseUrl.length() - 1);
+            } else {
+                return baseUrl;
+            }
+        }
     }
 
     @Data
